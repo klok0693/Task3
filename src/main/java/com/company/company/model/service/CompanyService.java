@@ -5,7 +5,9 @@ import com.company.company.entity.Company;
 import com.company.company.model.data.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.transaction.annotation.Transactional;
+
+import static org.springframework.transaction.annotation.Propagation.REQUIRED;
 
 /**
  * Created by klok on 28.5.18.
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @NotNullByDefault
 
 @Service
-@RequestMapping(value = "/company")
+@Transactional(propagation = REQUIRED)
 public class CompanyService extends GenericEntityService<Company> {
 
     @Autowired
