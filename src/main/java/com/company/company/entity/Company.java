@@ -44,13 +44,13 @@ public class Company implements JpaEntity {
             targetEntity = Department.class,
             mappedBy = "company",
             cascade = ALL,
-            orphanRemoval = true,
             fetch = LAZY
     )
     @JsonManagedReference(value = "companyDepartments")
     private Set<Department> departments;
 
 
+    @Column(name = "type", nullable = false)
     @JsonProperty(value = "type")
     private final String type = "company";
 }

@@ -13,7 +13,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
-import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.SEQUENCE;
 
@@ -30,8 +30,10 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @NoArgsConstructor
 public class Employee implements JpaEntity {
 
-    @Id @GeneratedValue(strategy = SEQUENCE)
-    @Column(name = "id")
+    @Id
+
+    @GeneratedValue(strategy = SEQUENCE)
+    @Column(name = "id", updatable = false)
     private volatile Integer id;
 
 
@@ -53,7 +55,7 @@ public class Employee implements JpaEntity {
 
     @ManyToOne(
             targetEntity = Department.class,
-            cascade = PERSIST,
+            cascade = MERGE,
             fetch = EAGER,
             optional = false
     )

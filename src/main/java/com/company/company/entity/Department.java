@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 import java.util.Set;
 
 import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.SEQUENCE;
@@ -44,7 +44,7 @@ public class Department implements JpaEntity {
 
     @ManyToOne(
             targetEntity = Company.class,
-            cascade = PERSIST,
+            cascade = MERGE,
             fetch = EAGER,
             optional = false
     )
@@ -62,7 +62,6 @@ public class Department implements JpaEntity {
             targetEntity = Employee.class,
             mappedBy = "department",
             cascade = ALL,
-            orphanRemoval = true,
             fetch = LAZY
     )
     @JsonManagedReference("departmentEmployees")
