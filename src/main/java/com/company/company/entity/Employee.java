@@ -1,8 +1,7 @@
 package com.company.company.entity;
 
 import com.company.company.NotNullByDefault;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -24,15 +23,14 @@ import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity
 @Table(name = "employees")
+
 @Data
 @ToString(exclude = "department")
 @EqualsAndHashCode(exclude = "department", callSuper = false)
 @NoArgsConstructor
 public class Employee implements JpaEntity {
 
-    @Id
-
-    @GeneratedValue(strategy = SEQUENCE)
+    @Id @GeneratedValue(strategy = SEQUENCE)
     @Column(name = "id", updatable = false)
     private volatile Integer id;
 
@@ -64,10 +62,19 @@ public class Employee implements JpaEntity {
             name = "department",
             referencedColumnName = "id"
     )
-    @JsonBackReference(value = "departmentEmployees")
+    //@JsonBackReference(value = "departmentEmployees")
+    @JsonIgnoreProperties({"name", "company","employees", "type"})
     private volatile Department department;
 
 
     @JsonProperty(value = "type")
     private final String type = "employee";
+
+
+    // add departmenId to json
+    /*@Transient
+    @JsonProperty("departmentId")
+    public Integer getDepartmentId() {
+        return department.getId();
+    }*/
 }

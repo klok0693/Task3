@@ -1,7 +1,6 @@
 package com.company.company.entity;
 
 import com.company.company.NotNullByDefault;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -46,7 +45,7 @@ public class Company implements JpaEntity {
             cascade = ALL,
             fetch = LAZY
     )
-    @JsonManagedReference(value = "companyDepartments")
+    //@JsonManagedReference(value = "companyDepartments")
     private Set<Department> departments;
 
 

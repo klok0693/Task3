@@ -19,7 +19,7 @@ import static org.springframework.transaction.annotation.Propagation.REQUIRED;
 
 @Service
 @AllArgsConstructor
-@Transactional(propagation = REQUIRED, isolation = REPEATABLE_READ, timeout = 30)
+@Transactional(propagation = REQUIRED, isolation = REPEATABLE_READ)
 public abstract class GenericEntityService<E extends JpaEntity> {
     private GenericEntityRepository<E> repository;
 

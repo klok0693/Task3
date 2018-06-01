@@ -1,8 +1,7 @@
 package com.company.company.entity;
 
 import com.company.company.NotNullByDefault;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -53,7 +52,8 @@ public class Department implements JpaEntity {
             name = "company_id",
             referencedColumnName = "id"
     )
-    @JsonBackReference(value = "companyDepartments")
+    //@JsonBackReference(value = "companyDepartments")
+    @JsonIgnoreProperties({"name", "departments", "type"})
     private volatile Company company;
 
 
@@ -64,10 +64,18 @@ public class Department implements JpaEntity {
             cascade = ALL,
             fetch = LAZY
     )
-    @JsonManagedReference("departmentEmployees")
+    //@JsonManagedReference("departmentEmployees")
     private volatile Set<Employee> employees;
 
 
     @JsonProperty(value = "type")
     private final String type = "department";
+
+
+    // add companyId to json
+    /*@Transient
+    @JsonProperty("companyId")
+    public Integer getCompanyId() {
+        return company.getId();
+    }*/
 }
