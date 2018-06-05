@@ -1,7 +1,8 @@
 package com.company.company.entity;
 
 import com.company.company.NotNullByDefault;
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
-import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.SEQUENCE;
 
@@ -53,7 +53,6 @@ public class Employee implements JpaEntity {
 
     @ManyToOne(
             targetEntity = Department.class,
-            cascade = MERGE,
             fetch = EAGER,
             optional = false
     )
@@ -62,19 +61,10 @@ public class Employee implements JpaEntity {
             name = "department",
             referencedColumnName = "id"
     )
-    //@JsonBackReference(value = "departmentEmployees")
-    @JsonIgnoreProperties({"name", "company","employees", "type"})
+    @JsonIgnoreProperties({"name", "company","employees"})
     private volatile Department department;
 
 
     @JsonProperty(value = "type")
     private final String type = "employee";
-
-
-    // add departmenId to json
-    /*@Transient
-    @JsonProperty("departmentId")
-    public Integer getDepartmentId() {
-        return department.getId();
-    }*/
 }

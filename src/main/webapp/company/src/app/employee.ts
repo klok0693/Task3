@@ -1,9 +1,4 @@
 export class Employee {
-  /*id:           number;
-  firstName:    string;
-  lastName:     string;
-  recruitment:  Date;
-  type:         string;*/
 
   constructor(
     public id: number,
@@ -11,5 +6,13 @@ export class Employee {
     public lastName: string,
     public recruitment: Date,
     public type: string,
-    public departmentId: number) { }
+    public department: Department) { }
+}
+
+export class Department{
+
+  constructor(
+    public id: number,
+    public type: string
+  ) {}
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Employee} from "./employee";
+import {Department, Employee} from "./employee";
 import {AppService} from "./app.service";
 import {TemplateRef, ViewChild} from '@angular/core';
 
@@ -13,6 +13,7 @@ export class AppComponent implements OnInit {
   @ViewChild('editTemplate') editTemplate: TemplateRef<any>;
 
   editedEmployee: Employee;
+  department: Department;
   employees: Employee[];
   isNewRecord: boolean;
   message: string;
@@ -35,7 +36,8 @@ export class AppComponent implements OnInit {
 
 
   addEmployee(): void {
-    this.editedEmployee = new Employee(0, "","", null, "", 0);
+    this.department = new Department(0, "department");
+    this.editedEmployee = new Employee(null, "","", new Date(), "employee", this.department);
     this.employees.push(this.editedEmployee);
     this.isNewRecord = true;
   }
@@ -47,7 +49,7 @@ export class AppComponent implements OnInit {
                                employee.lastName,
                                employee.recruitment,
                                employee.type,
-                               employee.departmentId
+                               employee.department
     );
   }
 

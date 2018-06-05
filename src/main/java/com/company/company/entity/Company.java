@@ -45,7 +45,6 @@ public class Company implements JpaEntity {
             cascade = ALL,
             fetch = LAZY
     )
-    //@JsonManagedReference(value = "companyDepartments")
     private Set<Department> departments;
 
 

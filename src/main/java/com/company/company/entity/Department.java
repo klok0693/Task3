@@ -13,7 +13,6 @@ import javax.validation.constraints.Size;
 import java.util.Set;
 
 import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.SEQUENCE;
@@ -43,7 +42,6 @@ public class Department implements JpaEntity {
 
     @ManyToOne(
             targetEntity = Company.class,
-            cascade = MERGE,
             fetch = EAGER,
             optional = false
     )
@@ -52,8 +50,7 @@ public class Department implements JpaEntity {
             name = "company_id",
             referencedColumnName = "id"
     )
-    //@JsonBackReference(value = "companyDepartments")
-    @JsonIgnoreProperties({"name", "departments", "type"})
+    @JsonIgnoreProperties({"name", "departments"})
     private volatile Company company;
 
 
@@ -63,19 +60,11 @@ public class Department implements JpaEntity {
             mappedBy = "department",
             cascade = ALL,
             fetch = LAZY
+            //orphanRemoval = true
     )
-    //@JsonManagedReference("departmentEmployees")
     private volatile Set<Employee> employees;
 
 
     @JsonProperty(value = "type")
     private final String type = "department";
-
-
-    // add companyId to json
-    /*@Transient
-    @JsonProperty("companyId")
-    public Integer getCompanyId() {
-        return company.getId();
-    }*/
 }

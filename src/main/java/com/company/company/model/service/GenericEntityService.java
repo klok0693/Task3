@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 import static org.springframework.transaction.annotation.Isolation.REPEATABLE_READ;
-import static org.springframework.transaction.annotation.Propagation.REQUIRED;
 
 /**
  * Created by klok on 28.5.18.
@@ -19,10 +18,9 @@ import static org.springframework.transaction.annotation.Propagation.REQUIRED;
 
 @Service
 @AllArgsConstructor
-@Transactional(propagation = REQUIRED, isolation = REPEATABLE_READ)
+@Transactional(isolation = REPEATABLE_READ)
 public abstract class GenericEntityService<E extends JpaEntity> {
     private GenericEntityRepository<E> repository;
-
 
     public E save(E s) {
         return repository.save(s);

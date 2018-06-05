@@ -42,9 +42,6 @@ public abstract class GenericRestController<E extends JpaEntity> {
 
     @RequestMapping(method = PUT)
     public @ResponseBody E update(@RequestBody @Valid E entity) {
-        System.out.println("\n");
-        System.out.println(entity);
-        System.out.println("\n");
         return service.save(entity);
     }
 

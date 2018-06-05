@@ -1,4 +1,4 @@
-package com.company.company.config;
+package com.company.company.config.security;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;

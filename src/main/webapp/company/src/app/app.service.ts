@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpClient, HttpParams } from  '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { EMPLOYEES } from './mock-employees';
+//import { EMPLOYEES } from './mock-employees';
 import {Employee} from "./employee";
 
 @Injectable({
@@ -35,8 +35,10 @@ export class AppService {
   }
 
   deleteEmployee(id: number): Observable<Object> {
-    return this.httpClient.delete(this._url, {params: this.getUrlParam(id)});
+    return this.httpClient.delete("http://localhost:8090/employee/id", {params: this.getUrlParam(id)});
   }
+
+
 
   private getUrlParam(id: number): HttpParams {
     return new HttpParams().set("id", id.toString())

@@ -22,7 +22,8 @@
     <td>lastName</td>
     <td>recruitment</td>
     <td>type</td>
-    <td>departmentId</td>
+    <td>department_id</td>
+    <td>department_type</td>
   </tr>
   </thead>
   <tbody>
@@ -43,7 +44,8 @@
   <td>{{employee.lastName}}</td>
   <td>{{employee.recruitment}}</td>
   <td>{{employee.type}}</td>
-  <td>{{employee.departmentId}}</td>
+  <td>{{employee.department.id}}</td>
+  <td>{{employee.department.type}}</td>
   <td>
     <input type="button" value="Change" class="btn btn-default" (click)="editEmployee(employee)" />
   </td>
@@ -68,6 +70,12 @@
   </td>
   <td>
     <input type="text" [(ngModel)]="editedEmployee.type" class="form-control" />
+  </td>
+  <td>
+    <input type="text" [(ngModel)]="editedEmployee.department.id" class="form-control" />
+  </td>
+  <td>
+    <input type="text" [(ngModel)]="editedEmployee.department.type" class="form-control" />
   </td>
   <td>
     <input type="button" value="Save" (click)="saveEmployee()" class="btn btn-success" />
