@@ -1,88 +1,19 @@
-<!--<h1>Employees</h1>
-<div>
-  <table  style="width:100%">
-    <tr>
-      <th>Id</th>
-      <th>First Name</th>
-    </tr>
-    <tr *ngFor="let employee of employees">
-      <td>{{employee.id}}</td>
-      <td>{{employee.firstName}}</td>
-    </tr>
-  </table>
-</div>-->
-
-<h1>Employees</h1>
-<input type="button" value="add" class="btn btn-default" (click)="addEmployee()" />
-<table class="table table-striped">
-  <thead>
-  <tr>
-    <td>id</td>
-    <td>firstName</td>
-    <td>lastName</td>
-    <td>recruitment</td>
-    <td>type</td>
-    <td>department_id</td>
-    <td>department_type</td>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let employee of employees">
-    <ng-template [ngTemplateOutlet]="loadTemplate(employee)"
-                 [ngTemplateOutletContext]="{ $implicit: employee}">
-    </ng-template>
-  </tr>
-  </tbody>
-</table>
-<div>{{statusMessage}}</div>
-
-
-<!--шаблон для чтения-->
-<ng-template #readOnlyTemplate let-employee>
-  <td>{{employee.id}}</td>
-  <td>{{employee.firstName}}</td>
-  <td>{{employee.lastName}}</td>
-  <td>{{employee.recruitment}}</td>
-  <td>{{employee.type}}</td>
-  <td>{{employee.department.id}}</td>
-  <td>{{employee.department.type}}</td>
-  <td>
-    <input type="button" value="Change" class="btn btn-default" (click)="editEmployee(employee)" />
-  </td>
-  <td>
-    <input type="button" value="Delete" (click)="deleteEmployee(employee)" class="btn btn-danger" />
-  </td>
-</ng-template>
-
-<!--шаблон для редактирования-->
-<ng-template #editTemplate>
-  <td>
-    <input type="text" [(ngModel)]="editedEmployee.id" readonly disabled class="form-control" />
-  </td>
-  <td>
-    <input type="text" [(ngModel)]="editedEmployee.firstName" class="form-control" />
-  </td>
-  <td>
-    <input type="text" [(ngModel)]="editedEmployee.lastName" class="form-control" />
-  </td>
-  <td>
-    <input type="text" [(ngModel)]="editedEmployee.recruitment" class="form-control" />
-  </td>
-  <td>
-    <input type="text" [(ngModel)]="editedEmployee.type" class="form-control" />
-  </td>
-  <td>
-    <input type="text" [(ngModel)]="editedEmployee.department.id" class="form-control" />
-  </td>
-  <td>
-    <input type="text" [(ngModel)]="editedEmployee.department.type" class="form-control" />
-  </td>
-  <td>
-    <input type="button" value="Save" (click)="saveEmployee()" class="btn btn-success" />
-  </td>
-  <td>
-    <input type="button" value="Cancel" (click)="cancel()" class="btn btn-warning" />
-  </td>
-</ng-template>
-
-
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li><a routerLink="/home" routerLinkActive="active">Home</a></li>
+          <li><a routerLink="/employee" routerLinkActive="active">employee</a></li>
+          <li><a routerLink="/login" routerLinkActive="active">login</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+<div class="container">
+  <div class="row">
+    <!-- routing here -->
+    <router-outlet></router-outlet>
+  </div>
+</div>

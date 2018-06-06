@@ -8,7 +8,7 @@ import {Employee} from "./employee";
 @Injectable({
   providedIn: 'root'
 })
-export class AppService {
+export class EmployeeService {
   private _url = "http://localhost:8090/employee";
 
   constructor(private httpClient: HttpClient) { }

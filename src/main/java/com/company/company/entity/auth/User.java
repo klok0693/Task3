@@ -3,11 +3,12 @@ package com.company.company.entity.auth;
 import com.company.company.NotNullByDefault;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Set;
 
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 @NotNullByDefault
@@ -16,7 +17,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = SEQUENCE)
@@ -28,15 +29,18 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column
+    @Column(name = "accountNonExpired")
     private boolean isAccountNonExpired = true;
-    @Column
+
+    @Column(name = "accountNonLocked")
     private boolean isAccountNonLocked = true;
-    @Column
+
+    @Column(name = "credentialsNonExpired")
     private boolean isCredentialsNonExpired = true;
-    @Column
+
+    @Column(name = "enabled")
     private boolean isEnabled =true;
 
-    @Transient
-    private Set<GrantedAuthority> roles;
+    @ManyToMany(targetEntity = Authorities.class, fetch = EAGER)
+    private Set<Authorities> authorities;
 }

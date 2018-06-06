@@ -2,16 +2,13 @@ package com.company.company.controller;
 
 import com.company.company.NotNullByDefault;
 import com.company.company.config.security.TokenProvider;
-import com.company.company.entity.auth.User;
-import com.company.company.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletResponse;
 
 @NotNullByDefault
 
@@ -22,28 +19,27 @@ public class LoginController {
 
     private TokenProvider tokenProvider;
 
-    private UserService userService;
-
     @Autowired
-    public LoginController(AuthenticationManager authenticationManager, TokenProvider tokenProvider, UserService userService) {
+    public LoginController(AuthenticationManager authenticationManager, TokenProvider tokenProvider) {
         this.authenticationManager = authenticationManager;
         this.tokenProvider = tokenProvider;
-        this.userService = userService;
     }
 
     @PostMapping("/login")
-    public String getToken(@RequestBody User user, HttpServletResponse response) {
+    public String getToken(@PathVariable("username") String username,@PathVariable("password") String password) {
 
-
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user.getUsername(),
-                user.getPassword());
+        String password1 = new BCryptPasswordEncoder().encode(password);
 
         System.out.println("\n");
-        System.out.println("auth = "+ authToken);
+        System.out.println("password before = " + password);
+        System.out.println("password after = "+ password1);
         System.out.println("\n");
+
+        UsernamePasswordAuthenticationToken authToken =
+                new UsernamePasswordAuthenticationToken(username, password);
 
         authenticationManager.authenticate(authToken);
-        return tokenProvider.createToken(user.getUsername());
+        return tokenProvider.createToken(username, password);
 
     }
 }

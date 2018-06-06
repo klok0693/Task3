@@ -5,45 +5,50 @@ import com.company.company.model.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.impl.TextCodec;
+import io.jsonwebtoken.impl.crypto.MacProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
+import javax.crypto.SecretKey;
 import java.util.Date;
 
 @NotNullByDefault
 
-@Component
+@Configuration
 public class TokenProvider {
 
-    private static final String SECRET = "secret";
+    private AuthenticationManager authenticationManager;
+    private UserService userService;
 
-    private static final int EXPIRATION_TIME = 60*60*6;
+    private static final String SECRET = "123";
+    SecretKey key = MacProvider.generateKey();
+    byte[] keyBytes = key.getEncoded();
+    String base64Encoded = TextCodec.BASE64URL.encode(keyBytes);
 
     @Autowired
-    UserService userService;
+    public TokenProvider(AuthenticationManager authenticationManager, UserService userService) {
+        this.authenticationManager = authenticationManager;
+        this.userService = userService;
+    }
 
-    public String createToken(String username) {
-        UserDetails user = userService.loadUserByUsername(username);
+    public String createToken(String username, String password) {
+
+        /*Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(username, password)
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);*/
 
         Claims claims = Jwts.claims().setSubject(username);
-
-        ArrayList<String> rolesList = new ArrayList<String>();
-
-        for (GrantedAuthority role : user.getAuthorities()) {
-            rolesList.add(role.getAuthority());
-        }
-        claims.put("roles", rolesList);
-
-        String token = Jwts.builder().setClaims(claims)
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME)).setIssuedAt(new Date())
-                .signWith(SignatureAlgorithm.HS512, SECRET).compact();
-
-        return token;
+        return Jwts.builder().setClaims(claims)
+                .setExpiration(new Date(System.currentTimeMillis() + 6*60*60))
+                .setIssuedAt(new Date())
+                .signWith(SignatureAlgorithm.HS512, base64Encoded)
+                .compact();
     }
 
     public Authentication getAuthentication(String token) {
