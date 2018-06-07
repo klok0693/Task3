@@ -6,6 +6,9 @@ import {LoginService} from "./login.service";
 import {TokenStorage} from "./token-storage";
 import {User} from "./user";
 import {Employee} from "../employee/employee";
+import {FormGroup} from '@angular/forms';
+import {FormBuilder} from '@angular/forms';
+import {Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -13,24 +16,43 @@ import {Employee} from "../employee/employee";
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  @ViewChild('editTemplate') editTemplate: TemplateRef<any>;
+  form: FormGroup;
 
-  constructor(private router: Router, private authService: LoginService, private token: TokenStorage) { }
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private authService: LoginService,
+    private token: TokenStorage) {
+
+    this.editedUser = new User('','');
+  }
+
 
   editedUser: User;
 
-  login() : void {
-    this.authService.attemptAuth(this.editedUser).subscribe(
-      data => {
-        this.token.saveToken(data.toString());
-        //this.router.navigate(['user']);
-      }
-    );
+  setUsername(username: string) {
+     this.editedUser.username = username;
   }
 
-  loadTemplate(user: User): TemplateRef<any> {
-    if (this.editedUser && this.editedUser.username == user.username) {
-      return this.editTemplate;
+  setPassword(password: string) {
+    this.editedUser.password = password;
+  }
+
+  login() : void {
+    const val = this.editedUser;
+    console.log("val = ", val);
+
+    if (val.username && val.password) {
+      this.authService.attemptAuth(val.username, val.password)
+        .subscribe((data: any) => {
+
+          console.log('token = ', data);
+
+          this.token.saveToken(data);
+          this.router.navigateByUrl('/employee');
+        },
+          (error => alert("Wrong password"))
+        );
     }
   }
 

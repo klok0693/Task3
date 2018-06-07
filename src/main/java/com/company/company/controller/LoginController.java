@@ -2,13 +2,16 @@ package com.company.company.controller;
 
 import com.company.company.NotNullByDefault;
 import com.company.company.config.security.TokenProvider;
+import com.company.company.entity.auth.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.ws.rs.core.MediaType;
+
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @NotNullByDefault
 
@@ -25,8 +28,11 @@ public class LoginController {
         this.tokenProvider = tokenProvider;
     }
 
-    @PostMapping("/login")
-    public String getToken(@PathVariable("username") String username,@PathVariable("password") String password) {
+    @RequestMapping(value = "/login", method = POST, produces = MediaType.TEXT_PLAIN)
+    public @ResponseBody String getToken(@RequestBody User user) {
+
+        String username = user.getUsername();
+        String password = user.getPassword();
 
         String password1 = new BCryptPasswordEncoder().encode(password);
 

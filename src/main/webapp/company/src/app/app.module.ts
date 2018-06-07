@@ -10,9 +10,10 @@ import { HomeComponent} from "./home/home.component";
 
 import { routing }  from './app.routing';
 import { LoginComponent } from './login/login.component';
+import {ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
-  imports: [CommonModule, BrowserModule, HttpClientModule, FormsModule, routing],
+  imports: [CommonModule, BrowserModule, HttpClientModule, FormsModule, ReactiveFormsModule, routing],
   declarations: [EmployeeComponent, AppComponent, HomeComponent, LoginComponent],
   bootstrap: [AppComponent, EmployeeComponent, HomeComponent, LoginComponent]
 })

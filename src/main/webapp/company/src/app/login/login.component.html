@@ -1,20 +1,18 @@
 <p>Login</p>
 
-<ng-template #editTemplate>
-  <div class="panel-body">
-      <div>
-        <input type="text" class="text" [(ngModel)]="editedUser.username">
+<form>
+  <div>
+      <div class="form-group">
+        <input type="text" (input)="setUsername(username.value)" #username required>
         <label>username</label>
       </div>
 
       <div>
-        <input type="password" class="text" [(ngModel)]="editedUser.password">
+        <input type="password" (input)="setPassword(password.value)" #password required>
         <label>password</label>
       </div>
 
-    <button (click)="login()"
-            class="btn waves-effect waves-light"
-            type="submit" name="action">Login</button>
+    <button (click)="login()" class="btn waves-effect waves-light">Login</button>
   </div>
 
-</ng-template>
+</form>
