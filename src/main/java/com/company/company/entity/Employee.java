@@ -30,7 +30,8 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @NoArgsConstructor
 public class Employee implements JpaEntity {
 
-    @Id @GeneratedValue(strategy = SEQUENCE)
+    @Id
+    @GeneratedValue(strategy = SEQUENCE)
     @Column(name = "id", updatable = false)
     private volatile Integer id;
 

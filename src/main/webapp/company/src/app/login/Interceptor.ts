@@ -4,7 +4,7 @@ import {HttpInterceptor, HttpRequest, HttpHandler, HttpSentEvent, HttpHeaderResp
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import {TokenStorage} from './token-storage';
-import 'rxjs/add/operator/do';
+//import 'rxjs/add/operator/do';
 
 const TOKEN_HEADER_KEY = 'Authorization';
 
@@ -14,11 +14,16 @@ export class Interceptor implements HttpInterceptor {
   constructor(private token: TokenStorage, private router: Router) { }
 
   intercept(req: HttpRequest<Object>, next: HttpHandler){
+
     let authReq = req;
-    if (this.token.getToken() != null) {
-      authReq = req.clone({ headers: req.headers.set(TOKEN_HEADER_KEY, 'Bearer ' + this .token.getToken())});
+    if (req.url !== 'http://localhost:8090/login') {
+
+      if (this.token.getToken() != null) {
+        authReq = req.clone({headers: req.headers.set(TOKEN_HEADER_KEY, 'Bearer ' + this.token.getToken())});
+      }
     }
-    return next.handle(authReq) /*.do(
+    return next.handle(authReq)
+  } /*.do(
       (err: any) => {
         if (err instanceof HttpErrorResponse) {
 
@@ -27,5 +32,5 @@ export class Interceptor implements HttpInterceptor {
           }
         }
       });*/
-  }
+
 }

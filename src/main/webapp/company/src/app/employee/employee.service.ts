@@ -38,9 +38,11 @@ export class EmployeeService {
     return this.httpClient.delete("http://localhost:8090/employee/id", {params: this.getUrlParam(id)});
   }
 
-
-
   private getUrlParam(id: number): HttpParams {
     return new HttpParams().set("id", id.toString())
+  }
+
+  deleteUser(): Observable<string> {
+    return this.httpClient.delete('http://localhost:8090/users', {responseType: 'text'});
   }
 }

@@ -38,6 +38,7 @@ public class JWTFilter extends GenericFilterBean {
         try {
             HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
             String jwt = resolveToken(httpRequest);
+            System.out.println("jwt = " + jwt);
             if (jwt != null) {
                 Authentication authentication = this.tokenProvider.getAuthentication(jwt);
                 if (authentication != null) {
@@ -46,9 +47,14 @@ public class JWTFilter extends GenericFilterBean {
             }
 
             chain.doFilter(servletRequest, servletResponse);
-        } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException
+        }
+        catch (ExpiredJwtException
+                | UnsupportedJwtException
+                | MalformedJwtException
+                | SignatureException
                 | UsernameNotFoundException e) {
-            // Application.logger.info("Security exception {}", e.getMessage());
+
+            e.printStackTrace();
             ((HttpServletResponse) servletResponse).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
     }

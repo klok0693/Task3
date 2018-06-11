@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @NotNullByDefault
 
+//@PreAuthorize("hasRole('ROLE_ADMIN')")
 @RestController
 @RequestMapping(value = "/employee")
 public class EmployeeController extends GenericRestController<Employee> {

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {Department, Employee} from "./employee";
 import {TemplateRef, ViewChild} from '@angular/core';
 import {EmployeeService} from "./employee.service";
+import {Router} from '@angular/router';
+import {TokenStorage} from "../login/token-storage";
 
 @Component({
   selector: 'app-employee',
@@ -19,16 +21,15 @@ export class EmployeeComponent implements OnInit {
   message: string;
 
 
-  constructor(private service: EmployeeService) { }
+  constructor(
+    private service: EmployeeService,
+    private router: Router,
+    private storage: TokenStorage) { }
 
 
   ngOnInit(): void {
     this.loadEmployees();
   }
-
-  /*getEmployees(): void {
-    this.service.getEmployees().subscribe(employees => this.employees = employees);
-  }*/
 
   loadEmployees(): void {
     this.service.getEmployees().subscribe((data: Employee[]) => this.employees = data);
@@ -94,5 +95,24 @@ export class EmployeeComponent implements OnInit {
     this.service.deleteEmployee(employee.id).subscribe(data => {
       this.reloadEmployees();
     })
+  }
+
+  logout(): void {
+    this.storage.signOut();
+    this.router.navigateByUrl("/")
+  }
+
+  deleteUser(): void {
+    this.service.deleteUser().subscribe(data => {
+        if (data === 'true') {
+          alert('Account deleted');
+          this.router.navigateByUrl('/');
+        }
+        else {
+          alert('Cant delete account');
+        }
+      },
+      (error => alert(JSON.stringify(error)))
+    );
   }
 }

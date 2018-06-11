@@ -25,7 +25,6 @@ public class TokenProvider {
     private AuthenticationManager authenticationManager;
     private UserService userService;
 
-    private static final String SECRET = "123";
     SecretKey key = MacProvider.generateKey();
     byte[] keyBytes = key.getEncoded();
     String base64Encoded = TextCodec.BASE64URL.encode(keyBytes);
@@ -38,21 +37,16 @@ public class TokenProvider {
 
     public String createToken(String username, String password) {
 
-        /*Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(username, password)
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);*/
-
         Claims claims = Jwts.claims().setSubject(username);
         return Jwts.builder().setClaims(claims)
-                .setExpiration(new Date(System.currentTimeMillis() + 6*60*60))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000*60*120))
                 .setIssuedAt(new Date())
                 .signWith(SignatureAlgorithm.HS512, base64Encoded)
                 .compact();
     }
 
     public Authentication getAuthentication(String token) {
-        String username = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody().getSubject();
+        String username = Jwts.parser().setSigningKey(base64Encoded).parseClaimsJws(token).getBody().getSubject();
         UserDetails userDetails = this.userService.loadUserByUsername(username);
 
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());

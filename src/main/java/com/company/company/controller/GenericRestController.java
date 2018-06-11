@@ -17,7 +17,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping(produces = "application/json", value = "/company")
+@RequestMapping(produces = "application/json")
 public abstract class GenericRestController<E extends JpaEntity> {
     private GenericEntityService<E> service;
 
@@ -38,6 +38,7 @@ public abstract class GenericRestController<E extends JpaEntity> {
     public @ResponseBody E save(@RequestBody @Valid E entity) {
         return service.save(entity);
     }
+
 
 
     @RequestMapping(method = PUT)
