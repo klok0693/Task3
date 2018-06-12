@@ -23,12 +23,10 @@ import static org.springframework.transaction.annotation.Isolation.REPEATABLE_RE
 public class UserService implements UserDetailsService {
 
     private UserRepository repository;
-    private UserEmailService emailService;
 
     @Autowired
-    public UserService(UserRepository repository, UserEmailService emailService) {
+    public UserService(UserRepository repository) {
         this.repository = repository;
-        this.emailService = emailService;
     }
 
     @Override
@@ -51,11 +49,10 @@ public class UserService implements UserDetailsService {
     }
 
     public void save(User user) {
-        String password = new BCryptPasswordEncoder().encode(user.getPassword());
-        user.setPassword(password);
+        String hashPasword = new BCryptPasswordEncoder().encode(user.getPassword());
+        user.setPassword(hashPasword);
 
         repository.save(user);
-        emailService.sendSimpleMessage("usrmbtask@gmail.com", "Hi", "Hello, User!");
     }
 
     public void delete(Integer id) {

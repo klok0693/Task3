@@ -54,7 +54,6 @@ public class LoginController {
 
         authenticationManager.authenticate(authToken);
         return tokenProvider.createToken(username, password);
-
     }
 
 

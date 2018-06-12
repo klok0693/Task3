@@ -11,6 +11,7 @@ import org.hibernate.annotations.NaturalId;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.util.Set;
 
 import static javax.persistence.CascadeType.PERSIST;
@@ -50,6 +51,10 @@ public class User implements UserDetails {
 
     @Column(name = "enabled")
     private boolean isEnabled =true;
+
+    @Pattern(regexp = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$")
+    @Column(name = "email", nullable = true)
+    private String email;
 
     @ManyToMany(fetch = EAGER, cascade = PERSIST)
     @JoinTable(

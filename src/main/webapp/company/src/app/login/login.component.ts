@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private loginService: LoginService,
-    private token: TokenStorage) {
+    private tokenStorage: TokenStorage) {
 
     this.editedUser = new User('','', []);
   }
@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit {
           console.log('token = ', data);
           if (data) {
 
-            this.token.saveToken(data);
+            this.tokenStorage.saveToken(data);
 
             this.loginService.getAuthority().subscribe((data: Authoruty[]) => {
                 console.log("auth = ", data[0].name);
@@ -81,10 +81,17 @@ export class LoginComponent implements OnInit {
 
     console.log("user = ", val);
 
-    this.loginService.saveUser(val).subscribe();
-    this.loginService.getToken(val.username, val.password).subscribe();
-
-    this.router.navigateByUrl("/user");
+    this.loginService.saveUser(val).subscribe(
+      () => {
+        this.loginService.getToken(val.username, val.password).subscribe(
+          (token: string) => {
+            this.tokenStorage.saveToken(token);
+            this.router.navigateByUrl("/user");
+          }
+        )
+      },
+      (error => alert(JSON.stringify(error)))
+    );
   }
 
   ngOnInit() {
