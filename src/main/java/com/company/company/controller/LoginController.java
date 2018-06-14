@@ -1,8 +1,9 @@
 package com.company.company.controller;
 
-import com.company.company.NotNullByDefault;
-import com.company.company.config.security.TokenProvider;
-import com.company.company.entity.auth.User;
+import com.company.company.util.NotNullByDefault;
+import com.company.company.config.security.jwt.TokenProvider;
+import com.company.company.model.entity.auth.User;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,7 +23,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @NotNullByDefault
 
-
+@Log4j
 @RestController
 public class LoginController {
 
@@ -43,17 +44,13 @@ public class LoginController {
         String password = user.getPassword();
 
         String password1 = new BCryptPasswordEncoder().encode(password);
-
-        System.out.println("\n");
-        System.out.println("password before = " + password);
-        System.out.println("password after = "+ password1);
-        System.out.println("\n");
+        log.debug("\n password before = "+password+"\n"+"password after = "+password1+"\n");
 
         UsernamePasswordAuthenticationToken authToken =
                 new UsernamePasswordAuthenticationToken(username, password);
 
         authenticationManager.authenticate(authToken);
-        return tokenProvider.createToken(username, password);
+        return tokenProvider.createToken(username);
     }
 
 

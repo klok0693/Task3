@@ -3,9 +3,9 @@
         "-//Hibernate/Hibernate Mapping DTD//EN"
         "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
-<hibernate-mapping package="com.company.company.entity">
+<hibernate-mapping package="com.company.company.model.entity">
 
-    <class name="JpaEntity" abstract="true">
+    <class name="com.company.company.model.entity.JpaEntity" abstract="true">
         <id name="id" column="entity_id" type="java.lang.Integer">
             <generator class="increment"/>
         </id>

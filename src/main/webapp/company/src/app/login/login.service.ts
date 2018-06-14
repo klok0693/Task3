@@ -13,7 +13,7 @@ export class LoginService {
   constructor(private http: HttpClient) {}
 
   getToken(username: string, password: string): Observable<string> {
-    const credentials = {username: username, password: password};
+    const credentials = {username: username, password: password, type: 'user'};
     return this.http.post('http://localhost:8090/login', credentials, {responseType:'text'});
   }
 

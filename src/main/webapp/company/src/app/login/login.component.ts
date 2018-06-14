@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
   }
 
   setUserAuthority() {
-    this.editedUser.authorities.push(new Authoruty(1));
+    this.editedUser.authorities.push(new Authoruty(1, 'ROLE_USER'));
   }
 
   login() : void {

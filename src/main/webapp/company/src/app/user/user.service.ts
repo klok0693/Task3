@@ -13,6 +13,6 @@ export class UserService {
 
 
   deleteUser(): Observable<string> {
-    return this.http.delete('http://localhost:8090/users', {responseType:'text'});
+    return this.http.delete('http://localhost:8090/users/current', {responseType:'text'});
   }
 }

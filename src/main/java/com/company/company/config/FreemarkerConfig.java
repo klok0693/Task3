@@ -1,7 +1,7 @@
 package com.company.company.config;
 
-import com.company.company.NotNullByDefault;
-import com.company.company.entity.Mail;
+import com.company.company.model.dto.Mail;
+import com.company.company.util.NotNullByDefault;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;

@@ -1,5 +1,6 @@
 package com.company.company;
 
+import com.company.company.util.NotNullByDefault;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.Test;
