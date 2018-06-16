@@ -2,21 +2,27 @@ package com.company.company.facade.impl;
 
 import com.company.company.facade.EntityFacade;
 import com.company.company.model.entity.JpaEntity;
+import com.company.company.service.dto.JasperCompiler;
 import com.company.company.service.entity.EntityService;
 import com.company.company.util.NotNullByDefault;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-import static lombok.AccessLevel.PROTECTED;
-
 @NotNullByDefault
 
 @Component
-@AllArgsConstructor(access = PROTECTED)
+//@AllArgsConstructor(access = PROTECTED)
 public abstract class GenericEntityFacade<E extends JpaEntity> implements EntityFacade<E> {
     protected EntityService<E> service;
+
+    @Autowired
+    private JasperCompiler compiler;
+
+    protected GenericEntityFacade(EntityService<E> service) {
+        this.service = service;
+    }
 
     //SAVE-UPDATE
     public E save(E s) throws Exception {
@@ -48,6 +54,12 @@ public abstract class GenericEntityFacade<E extends JpaEntity> implements Entity
 
     //READ
     public Iterable<E> findAll() {
+        /*try {
+            compiler.createPDFReport("/templates/report.jrxml", "employeeReport.csv");
+        }
+        catch (JRException | SQLException e) {
+            e.printStackTrace();
+        }*/
         return service.findAll();
     }
 

@@ -16,6 +16,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.util.List;
 
+import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 @NotNullByDefault
@@ -32,7 +34,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
 public class User implements UserDetails, JpaEntity {
 
     @Id
-    @Column(name = "userId")
+    @Column(name = "user_id")
     @GeneratedValue(strategy = SEQUENCE)
     private Integer id;
 
@@ -72,7 +74,7 @@ public class User implements UserDetails, JpaEntity {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "authorities_id")
     )
-    @ManyToMany/*(fetch = EAGER, cascade = MERGE)*/
+    @ManyToMany(fetch = EAGER, cascade = MERGE)
     private List<Authorities> authorities;
 
 

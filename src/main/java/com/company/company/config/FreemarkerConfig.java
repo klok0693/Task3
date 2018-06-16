@@ -1,6 +1,7 @@
 package com.company.company.config;
 
 import com.company.company.model.dto.Mail;
+import com.company.company.service.dto.JasperCompiler;
 import com.company.company.util.NotNullByDefault;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,5 +21,10 @@ public class FreemarkerConfig {
     @Bean
     public Mail getMail() {
         return new Mail();
+    }
+
+    @Bean
+    public JasperCompiler getCompiler() {
+        return new JasperCompiler();
     }
 }

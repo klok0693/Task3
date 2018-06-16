@@ -1,8 +1,8 @@
 package com.company.company.service.dto;
 
 import com.company.company.model.dto.Mail;
-import com.company.company.util.NotNullByDefault;
 import com.company.company.repository.UserRepository;
+import com.company.company.util.NotNullByDefault;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import lombok.extern.log4j.Log4j;
@@ -14,8 +14,11 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.springframework.mail.javamail.MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED;
@@ -60,29 +63,50 @@ public class UserEmailServiceImpl implements EmailService {
         model.put("signature", "TestTask");
         mail.setModel(model);
 
-        sendSimpleMessage(mail);
+        sendMessageToAdmins(mail);
     }
 
 
-    private void sendSimpleMessage(Mail mail) throws Exception {
+    private void sendMessageToAdmins(Mail mail) throws Exception {
 
-        List<String> adr = repository.getAdminsEmails();
-        String addresses[] = adr.toArray(new String[adr.size()]);
+        MimeMessage message  = getMessage();
+        String adresses[]    = getAdresses();
 
-        log.debug(adr);
+        log.debug(adresses);
 
-        MimeMessage message = emailSender.createMimeMessage();
-        MimeMessageHelper helper =
-                new MimeMessageHelper(message, MULTIPART_MODE_MIXED_RELATED, UTF_8.name());
+        MimeMessageHelper helper = new MimeMessageHelper(message, MULTIPART_MODE_MIXED_RELATED, UTF_8.name());
 
         Template t = configuration.getTemplate("addUserMessage.ftl");
         String html = FreeMarkerTemplateUtils.processTemplateIntoString(t, mail.getModel());
 
-        helper.setTo(addresses);
-        helper.setText(html, true);
-        helper.setSubject(mail.getSubject());
-        helper.setFrom(mail.getFrom());
+        setParams(helper, adresses, mail.getFrom(), mail.getSubject(), html, true);
 
         emailSender.send(message);
+    }
+
+
+    private String[] getAdresses() {
+        List<String> adr = repository.getAdminsEmails();
+        return adr.toArray(new String[adr.size()]);
+    }
+
+
+    private MimeMessage getMessage() {
+        return emailSender.createMimeMessage();
+    }
+
+
+    private void setParams(
+                           MimeMessageHelper helper,
+                           String adresses[],
+                           String from,
+                           String subject,
+                           String text,
+                           boolean isHTML)
+                                          throws MessagingException {
+        helper.setTo(adresses);
+        helper.setSubject(subject);
+        helper.setFrom(from);
+        helper.setText(text, isHTML);
     }
 }

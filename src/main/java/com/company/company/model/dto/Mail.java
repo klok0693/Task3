@@ -12,7 +12,7 @@ import java.util.Map;
 @NoArgsConstructor
 public class Mail {
 
-    private String from;
+    private String from = "admmbtask@gmail.com";
     private String to;
     private String subject;
     private String content;

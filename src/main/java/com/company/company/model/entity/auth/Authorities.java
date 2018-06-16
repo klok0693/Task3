@@ -15,6 +15,8 @@ import org.springframework.security.core.GrantedAuthority;
 import javax.persistence.*;
 import java.util.List;
 
+import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 @NotNullByDefault
@@ -25,11 +27,11 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @ToString(exclude = "users")
 
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property="id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Authorities implements GrantedAuthority, JpaEntity {
 
     @Id
-    @Column(name = "authoritiesId")
+    @Column(name = "authorities_id")
     @GeneratedValue(strategy = SEQUENCE)
     private Integer id;
 
@@ -44,7 +46,7 @@ public class Authorities implements GrantedAuthority, JpaEntity {
             joinColumns = @JoinColumn(name = "authorities_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )*/
-    @ManyToMany(mappedBy = "authorities")/*(fetch = EAGER, cascade = MERGE)*/
+    @ManyToMany(mappedBy = "authorities", fetch = EAGER, cascade = MERGE)
     private List<User> users;
 
 
